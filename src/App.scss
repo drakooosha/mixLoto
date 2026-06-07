@@ -1,0 +1,26 @@
+@use "./styles/variables" as *;
+
+.container {
+  max-width: 1700px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 50px;
+}
+
+.header {
+  text-align: center;
+  padding: 40px 0 10px;
+
+  &__title {
+    font-size: 44px;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    color: $text-main;
+
+    span {
+      color: $accent;
+      text-shadow: 0 0 18px rgba(167, 139, 250, 0.5);
+    }
+  }
+}
