@@ -68,7 +68,6 @@ const Board = () => {
             const id = activeVideo.id;
             startedRef.current.set(id, true);
 
-            // video.currentTime = activeVideo.time || 0;
             video.controls = true;
             video.muted = false;
             container.innerHTML = "";
@@ -88,6 +87,17 @@ const Board = () => {
 
         return () => {
             video.removeEventListener("canplay", start);
+        };
+    }, [activeVideo]);
+
+    useEffect(() => {
+        document.body.classList.toggle(
+            "videoModal",
+            Boolean(activeVideo)
+        );
+
+        return () => {
+            document.body.classList.remove("videoModal");
         };
     }, [activeVideo]);
 
