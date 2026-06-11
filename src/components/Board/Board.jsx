@@ -1,10 +1,13 @@
-import { useState, useEffect, useRef } from "react";
+import {useState, useEffect, useRef} from "react";
+
+import InfoPanel from "../InfoPanel/InfoPanel"
+import {videos} from "../../utils/helpers.js";
+
 import "./Board.scss";
-import { videos } from "../../utils/helpers.js";
 
 const Board = () => {
     const [activeVideo, setActiveVideo] = useState(null);
-    const [played, setPlayed] = useState(new Set());
+    const [playedTiles, setPlayedTiles] = useState(new Set());
 
     const cacheRef = useRef(new Map());
     const startedRef = useRef(new Map());
@@ -35,7 +38,7 @@ const Board = () => {
             video.pause();
         }
 
-        setPlayed((prev) => {
+        setPlayedTiles((prev) => {
             const next = new Set(prev);
             if (id != null && startedRef.current.get(id)) {
                 next.add(id);
@@ -71,7 +74,8 @@ const Board = () => {
             container.innerHTML = "";
             container.appendChild(video);
 
-            video.play().catch(() => {});
+            video.play().catch(() => {
+            });
             video.tabIndex = -1;
             video.focus();
         };
@@ -79,7 +83,7 @@ const Board = () => {
         if (video.readyState >= 3) {
             start();
         } else {
-            video.addEventListener("canplay", start, { once: true });
+            video.addEventListener("canplay", start, {once: true});
         }
 
         return () => {
@@ -90,18 +94,21 @@ const Board = () => {
     return (
         <>
             <section className="board">
-                {videos.map((video) => (
-                    <div
-                        key={video.id}
-                        className={`board__tile ${
-                            played.has(video.id) ? "board__tile--played" : ""
-                        }`}
-                        onMouseEnter={() => preloadVideo(video.src, video.time)}
-                        onClick={() => handleOpen(video)}
-                    >
-                        {video.id}
-                    </div>
-                ))}
+                <InfoPanel playedTiles={playedTiles}/>
+                <div className="board__content">
+                    {videos.map((video) => (
+                        <div
+                            key={video.id}
+                            className={`board__tile ${
+                                playedTiles.has(video.id) ? "board__tile--played" : ""
+                            }`}
+                            onMouseEnter={() => preloadVideo(video.src, video.time)}
+                            onClick={() => handleOpen(video)}
+                        >
+                            {video.id}
+                        </div>
+                    ))}
+                </div>
             </section>
 
             {activeVideo && (

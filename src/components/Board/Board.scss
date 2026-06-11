@@ -1,32 +1,52 @@
+@use "../../styles/variables" as *;
+
 .board {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 20px;
-  padding-top: 50px;
+  position: relative;
+  margin-top: $gap-main;
+  padding-bottom: 50px;
+
+  &__content {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: $gap-main;
+  }
 
   &__tile {
     height: 170px;
-    border-radius: 18px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: $radius-main;
+
+    background: $tile-gradient;
+    border: 1px solid $border-accent;
+
     display: flex;
     justify-content: center;
     align-items: center;
+
     font-weight: 800;
-    transition:
-            opacity 0.3s ease,
-            transform 0.1s ease;
     font-size: 72px;
-    color: rgba(255, 255, 255, 0.88);
+
+    color: $text-main;
+
+    transition:
+            opacity .3s ease,
+            transform .1s ease;
+
+    box-shadow:
+            $tile-inner-shadow,
+            $glow-tile;
+
     cursor: pointer;
 
     &:hover {
       transform: translateY(-6px) scale(1.03);
-      box-shadow: 0 0 28px rgba(167, 139, 250, 0.35);
+      box-shadow: $glow-main;
     }
 
     &--played {
-      opacity: 0;
+      background: $tile-bg;
+      border-color: $border-main;
+      color: $text-disabled;
+      box-shadow: none;
       pointer-events: none;
     }
   }
@@ -35,37 +55,35 @@
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+
+  background: $overlay-bg;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+
+  z-index: $z-overlay;
+
   backdrop-filter: blur(10px);
 
   &__tile {
-    @keyframes flyIn {
-      0% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0;
-      }
-
-      100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 1;
-      }
-    }
-
     position: fixed;
+
     top: 50%;
     left: 50%;
+
     width: 80vw;
     height: 75vh;
-    transform: translate(-50%, -50%) scale(1);
-    border-radius: 18px;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: $radius-main;
+
     overflow: hidden;
     background: black;
-    opacity: 1;
-    z-index: 1000;
+
+    z-index: $z-modal;
+
     animation: flyIn 1s ease;
   }
 
@@ -78,11 +96,26 @@
   &__loading {
     position: absolute;
     inset: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(0,0,0,0.4);
-    color: white;
+
+    background: $loader-bg;
+    color: $text-main;
+
     font-size: 50px;
+  }
+}
+
+@keyframes flyIn {
+  0% {
+    transform: translate(-50%, -50%);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translate(-50%, -50%);
+    opacity: 1;
   }
 }

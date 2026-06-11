@@ -1,6 +1,8 @@
 import { useState } from "react";
-import "./styles/global.scss";
+
 import Board from "./components/Board/Board";
+import "./styles/global.scss";
+
 import "./App.scss";
 
 function App() {
